@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Data;
+using System.Windows.Forms;
 using KotaTakip_BLL;
 
 namespace KotaTakipSistemi.UI
@@ -12,9 +12,9 @@ namespace KotaTakipSistemi.UI
             InitializeComponent();
             TabloyuYenile();
             ElementleriDoldur();
+            GecmisTablosunuYenile();
         }
 
-      
         private void TabloyuYenile()
         {
             try
@@ -24,24 +24,33 @@ namespace KotaTakipSistemi.UI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Tablo yüklenirken hata oluştu: " + ex.Message);
+                MessageBox.Show("Ana tablo güncellenirken hata oluştu: " + ex.Message);
             }
         }
 
-     
+        private void GecmisTablosunuYenile()
+        {
+            try
+            {
+                AboneBLL aboneBll = new AboneBLL();
+                dgvGecmis.DataSource = aboneBll.KullanimGecmisiListeleBLL();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Geçmiş tablosu yüklenirken hata oluştu: " + ex.Message);
+            }
+        }
+
         private void ElementleriDoldur()
         {
             try
             {
                 AboneBLL aboneBll = new AboneBLL();
-
-                
                 DataTable dtAboneler = aboneBll.HatIcinAboneListeleBLL();
                 cmbAboneler.DataSource = dtAboneler;
                 cmbAboneler.DisplayMember = "Ad";
                 cmbAboneler.ValueMember = "AboneID";
 
-               
                 DataTable dtPaketler = new DataTable();
                 dtPaketler.Columns.Add("PaketAdi", typeof(string));
                 dtPaketler.Columns.Add("PaketID", typeof(int));
@@ -60,7 +69,6 @@ namespace KotaTakipSistemi.UI
             }
         }
 
-       
         private void btnKaydet_Click(object sender, EventArgs e)
         {
             try
@@ -86,7 +94,6 @@ namespace KotaTakipSistemi.UI
             }
         }
 
-        
         private void btnSil_Click(object sender, EventArgs e)
         {
             try
@@ -120,25 +127,20 @@ namespace KotaTakipSistemi.UI
             }
         }
 
-       
         private void btnHatTanimla_Click(object sender, EventArgs e)
         {
-           
-            MessageBox.Show("SİSTEM BİLGİSİ: Buton bağlantısı çalışıyor, kod tetiklendi!");
-
             try
             {
-                // 2. AŞAMA: Kutular boş mu kalıyor testi
                 if (cmbAboneler.SelectedValue == null)
                 {
-                    MessageBox.Show("HATA: Abone seçilmemiş veya ComboBox arkada ID'yi yakalayamıyor!");
-                    return; // İşlemi durdur
+                    MessageBox.Show("HATA: Lütfen listeden bir abone seçin!");
+                    return;
                 }
 
                 if (cmbPaketler.SelectedValue == null)
                 {
-                    MessageBox.Show("HATA: Paket seçilmemiş!");
-                    return; 
+                    MessageBox.Show("HATA: Lütfen tanımlanacak internet paketini seçin!");
+                    return;
                 }
 
                 int aboneId = Convert.ToInt32(cmbAboneler.SelectedValue);
@@ -149,6 +151,7 @@ namespace KotaTakipSistemi.UI
                 aboneBll.HatTanimlaBLL(aboneId, paketId, rastgeleIP);
 
                 MessageBox.Show($"BAŞARILI! Aboneye {rastgeleIP} IP adresiyle hat tanımlandı!");
+
                 TabloyuYenile();
             }
             catch (Exception ex)
@@ -157,43 +160,39 @@ namespace KotaTakipSistemi.UI
             }
         }
 
- 
-
         private void btnKotaHarca_Click(object sender, EventArgs e)
         {
-  
-            MessageBox.Show("SİSTEM BİLGİSİ: Kota Harca butonu bağlantısı çalışıyor, kod tetiklendi!");
-
             try
             {
-          
-                if (string.IsNullOrWhiteSpace(txtHarcananMB.Text))
+                if (string.IsNullOrWhiteSpace(txtHarcananMB.Text) || string.IsNullOrWhiteSpace(txtUploadMB.Text))
                 {
-                    MessageBox.Show("HATA: Lütfen harcanacak internet miktarını MB cinsinden kutuya yazın!");
-                    return; 
+                    MessageBox.Show("HATA: Lütfen hem Download hem Upload alanlarını doldurun! (Kullanılmıyorsa 0 yazın)");
+                    return;
                 }
 
                 if (dgvAboneler.CurrentRow == null)
                 {
-                    MessageBox.Show("HATA: Lütfen tablodan işlem yapmak (kota düşmek) istediğiniz abonenin satırına tıklayıp seçin!");
-                    return; 
+                    MessageBox.Show("HATA: Lütfen tablodan işlem yapmak istediğiniz abonenin satırına tıklayıp seçin!");
+                    return;
                 }
 
-                int harcanan = Convert.ToInt32(txtHarcananMB.Text);
+                int download = Convert.ToInt32(txtHarcananMB.Text);
+                int upload = Convert.ToInt32(txtUploadMB.Text);
                 int aboneId = Convert.ToInt32(dgvAboneler.CurrentRow.Cells["AboneID"].Value);
 
                 AboneBLL aboneBll = new AboneBLL();
-                aboneBll.KullanimEkleBLL(aboneId, harcanan);
+                aboneBll.KullanimEkleBLL(aboneId, download, upload);
 
-                MessageBox.Show($"BAŞARILI! Abonenin hattından {harcanan} MB düşüldü ve kalan kota güncellendi!");
+                MessageBox.Show("BAŞARILI! Harcamalar kotadan düşüldü ve geçmiş tablosuna işlendi!");
 
-           
                 TabloyuYenile();
+                GecmisTablosunuYenile();
                 txtHarcananMB.Clear();
+                txtUploadMB.Clear();
             }
             catch (FormatException)
             {
-                MessageBox.Show("HATA: Lütfen harcanan MB kısmına sadece rakam girin (Örn: 5000). Harf veya boşluk kullanmayın!");
+                MessageBox.Show("HATA: Lütfen kutulara sadece rakam girin! Harf kullanmayın!");
             }
             catch (Exception ex)
             {
@@ -201,6 +200,14 @@ namespace KotaTakipSistemi.UI
             }
         }
 
- 
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

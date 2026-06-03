@@ -50,9 +50,15 @@ namespace KotaTakip_BLL
             aboneDal.HatTanimlaDAL(aboneId, paketId, ipAdresi);
         }
 
-        public void KullanimEkleBLL(int hatId, int harcananMB)
+        public void KullanimEkleBLL(int aboneId, int downloadMB, int uploadMB)
         {
-            aboneDal.KullanimEkleDAL(hatId, harcananMB);
+            AboneDAL aboneDal = new AboneDAL();
+            aboneDal.KullanimEkleDAL(aboneId, downloadMB, uploadMB);
+        }
+        public DataTable KullanimGecmisiListeleBLL()
+        {
+            AboneDAL aboneDal = new AboneDAL();
+            return aboneDal.KullanimGecmisiListeleDAL();
         }
     }
 }

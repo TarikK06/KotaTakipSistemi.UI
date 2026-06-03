@@ -87,21 +87,32 @@ namespace KotaTakip_DAL
         }
 
 
-        public void KullanimEkleDAL(int aboneId, int harcananMB)
+        public void KullanimEkleDAL(int aboneId, int downloadMB, int uploadMB)
         {
             using (MySqlConnection baglanti = new MySqlConnection(baglantiCumlesi))
             {
                 MySqlCommand cmd = new MySqlCommand("sp_KullanimEkle", baglanti);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-               
                 cmd.Parameters.AddWithValue("@p_AboneID", aboneId);
-                cmd.Parameters.AddWithValue("@p_HarcananMB", harcananMB);
-                cmd.Parameters.AddWithValue("@p_Yon", "Download");
+                cmd.Parameters.AddWithValue("@p_DownloadMB", downloadMB);
+                cmd.Parameters.AddWithValue("@p_UploadMB", uploadMB);
 
                 baglanti.Open();
                 cmd.ExecuteNonQuery();
             }
+        }
+        public DataTable KullanimGecmisiListeleDAL()
+        {
+            DataTable dt = new DataTable();
+            using (MySqlConnection baglanti = new MySqlConnection(baglantiCumlesi))
+            {
+                MySqlCommand cmd = new MySqlCommand("sp_KullanimGecmisiListele", baglanti);
+                cmd.CommandType = CommandType.StoredProcedure;
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            return dt;
         }
 
     }

@@ -48,8 +48,13 @@
             this.txtHarcananMB = new System.Windows.Forms.TextBox();
             this.btnHatTanimla = new System.Windows.Forms.Button();
             this.btnKotaHarca = new System.Windows.Forms.Button();
+            this.dgvGecmis = new System.Windows.Forms.DataGridView();
+            this.txtUploadMB = new System.Windows.Forms.TextBox();
+            this.Download = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAboneler)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvGecmis)).BeginInit();
             this.SuspendLayout();
             // 
             // txtAd
@@ -149,7 +154,7 @@
             this.dgvAboneler.Name = "dgvAboneler";
             this.dgvAboneler.RowHeadersWidth = 51;
             this.dgvAboneler.RowTemplate.Height = 24;
-            this.dgvAboneler.Size = new System.Drawing.Size(805, 568);
+            this.dgvAboneler.Size = new System.Drawing.Size(805, 206);
             this.dgvAboneler.TabIndex = 11;
             // 
             // btnSil
@@ -180,7 +185,7 @@
             // 
             // txtHarcananMB
             // 
-            this.txtHarcananMB.Location = new System.Drawing.Point(122, 483);
+            this.txtHarcananMB.Location = new System.Drawing.Point(122, 506);
             this.txtHarcananMB.Name = "txtHarcananMB";
             this.txtHarcananMB.Size = new System.Drawing.Size(100, 22);
             this.txtHarcananMB.TabIndex = 16;
@@ -197,19 +202,59 @@
             // 
             // btnKotaHarca
             // 
-            this.btnKotaHarca.Location = new System.Drawing.Point(112, 511);
+            this.btnKotaHarca.Location = new System.Drawing.Point(202, 534);
             this.btnKotaHarca.Name = "btnKotaHarca";
             this.btnKotaHarca.Size = new System.Drawing.Size(121, 23);
             this.btnKotaHarca.TabIndex = 18;
-            this.btnKotaHarca.Text = "Kota Harca";
+            this.btnKotaHarca.Text = "Kullanım Tanımla";
             this.btnKotaHarca.UseVisualStyleBackColor = true;
             this.btnKotaHarca.Click += new System.EventHandler(this.btnKotaHarca_Click);
+            // 
+            // dgvGecmis
+            // 
+            this.dgvGecmis.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvGecmis.Location = new System.Drawing.Point(548, 284);
+            this.dgvGecmis.Name = "dgvGecmis";
+            this.dgvGecmis.RowHeadersWidth = 51;
+            this.dgvGecmis.RowTemplate.Height = 24;
+            this.dgvGecmis.Size = new System.Drawing.Size(805, 150);
+            this.dgvGecmis.TabIndex = 19;
+            // 
+            // txtUploadMB
+            // 
+            this.txtUploadMB.Location = new System.Drawing.Point(284, 506);
+            this.txtUploadMB.Name = "txtUploadMB";
+            this.txtUploadMB.Size = new System.Drawing.Size(100, 22);
+            this.txtUploadMB.TabIndex = 20;
+            // 
+            // Download
+            // 
+            this.Download.AutoSize = true;
+            this.Download.Location = new System.Drawing.Point(119, 487);
+            this.Download.Name = "Download";
+            this.Download.Size = new System.Drawing.Size(68, 16);
+            this.Download.TabIndex = 21;
+            this.Download.Text = "Download";
+            this.Download.Click += new System.EventHandler(this.label6_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(290, 487);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(52, 16);
+            this.label6.TabIndex = 22;
+            this.label6.Text = "Upload";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1383, 698);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.Download);
+            this.Controls.Add(this.txtUploadMB);
+            this.Controls.Add(this.dgvGecmis);
             this.Controls.Add(this.btnKotaHarca);
             this.Controls.Add(this.btnHatTanimla);
             this.Controls.Add(this.txtHarcananMB);
@@ -230,8 +275,10 @@
             this.Controls.Add(this.txtAd);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAboneler)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvGecmis)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -258,5 +305,9 @@
         private System.Windows.Forms.TextBox txtHarcananMB;
         private System.Windows.Forms.Button btnHatTanimla;
         private System.Windows.Forms.Button btnKotaHarca;
+        private System.Windows.Forms.DataGridView dgvGecmis;
+        private System.Windows.Forms.TextBox txtUploadMB;
+        private System.Windows.Forms.Label Download;
+        private System.Windows.Forms.Label label6;
     }
 }
